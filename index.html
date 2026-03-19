@@ -409,6 +409,56 @@
             font-weight: 700;
         }
 
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .example-card {
+            border: 1px solid var(--line);
+            background: #1b1b1e;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .example-card img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+            background: #101012;
+        }
+
+        .example-body {
+            padding: 16px 16px 18px;
+        }
+
+        .example-body h4 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            line-height: 1.25;
+            font-weight: 750;
+        }
+
+        .example-meta {
+            color: var(--soft);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+        }
+
+        .source-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 12px;
+            color: var(--accent);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
         .muted {
             color: var(--muted);
         }
@@ -447,6 +497,10 @@
 
         @media (max-width: 640px) {
             .metric-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .examples-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -505,6 +559,7 @@
                 <div class="sidebar-items collapsed" id="suite-items">
                     <a class="sidebar-item" href="#task-coverage">Factory Tasks</a>
                     <a class="sidebar-item" href="#scene-coverage">Scene Coverage</a>
+                    <a class="sidebar-item" href="#factory-examples">Dual-Arm Examples</a>
                 </div>
             </div>
 
@@ -682,6 +737,45 @@
                 </ul>
             </section>
 
+            <section id="factory-examples">
+                <h2>Factory Dual-Arm Robot Examples</h2>
+                <p class="muted">
+                    Below are representative web-sourced examples of <strong>dual-arm robot operation in factory workshops</strong>. I selected cases that are directly related to assembly, electronics handling, and industrial two-arm coordination, and included source links for traceability.
+                </p>
+
+                <div class="examples-grid">
+                    <article class="example-card">
+                        <img src="https://ifr.org/img/uploads/ABB_YuMi_Praga_1_1600.jpg" alt="ABB YuMi collaborative dual-arm robot in socket manufacturing">
+                        <div class="example-body">
+                            <div class="example-meta">ABB YuMi / socket manufacturing</div>
+                            <h4>ABB YuMi in electrical socket manufacturing</h4>
+                            <p>ABB's dual-arm YuMi is shown in a real factory setting supporting small-part handling and collaborative assembly tasks in ABB's Czech plant.</p>
+                            <a class="source-link" href="https://ifr.org/news/yumi-manufacturing-sockets-at-abbs-plant-in-the-czech-republic/" target="_blank" rel="noreferrer">View source</a>
+                        </div>
+                    </article>
+
+                    <article class="example-card">
+                        <img src="https://kawasakirobotics.com/tachyon/sites/34/2022/08/01.594ff43b.jpg" alt="Kawasaki duAro dual-arm robot in printed circuit board mounting automation">
+                        <div class="example-body">
+                            <div class="example-meta">Kawasaki duAro / PCB mounting</div>
+                            <h4>duAro for PCB mounting and component handling</h4>
+                            <p>Kawasaki's dual-arm duAro is used in Toyo Electric's printed circuit board mounting workflow, automating wire handling, soldering support, and conveyor-linked assembly steps.</p>
+                            <a class="source-link" href="https://kawasakirobotics.com/pl/case-studies/case_toyo-elec/" target="_blank" rel="noreferrer">View source</a>
+                        </div>
+                    </article>
+
+                    <article class="example-card">
+                        <img src="https://www.motoman.com/getmedia/35901cda-a077-47b9-8d94-5fcf6e9ce144/SDA20_700.jpg.aspx" alt="Yaskawa Motoman SDA20F dual-arm industrial robot">
+                        <div class="example-body">
+                            <div class="example-meta">Yaskawa Motoman SDA20F / assembly handling</div>
+                            <h4>SDA20F for assembly and handling cells</h4>
+                            <p>Yaskawa's SDA20F is a dual-arm industrial robot designed for synchronized assembly and handling, especially where compact workcells and coordinated bimanual motion are needed.</p>
+                            <a class="source-link" href="https://www.motoman.com/en-us/products/robots/industrial-robots/assembly-handling/sda-series/sda20f" target="_blank" rel="noreferrer">View source</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
             <section id="robots">
                 <h2>Robot Coverage</h2>
                 <p class="muted">Supported robots are listed below with platform metadata and compatible tasks.</p>
@@ -730,6 +824,7 @@
                 <a class="toc-link" href="#scene-coverage">Lightwheel-LIBERO-Tasks Coverage</a>
                 <a class="toc-link" href="#dataset-format">Data Structure &amp; Access</a>
                 <a class="toc-link" href="#applications">Applications</a>
+                <a class="toc-link" href="#factory-examples">Factory Dual-Arm Robot Examples</a>
                 <a class="toc-link" href="#robots">Robot Coverage</a>
                 <a class="toc-link" href="#citation">Citation</a>
                 <a class="toc-link" href="#see-also">See Also</a>
@@ -800,7 +895,7 @@
         }
 
         function setupActiveLinks() {
-            const ids = ["overview", "task-coverage", "scene-coverage", "dataset-format", "applications", "robots", "citation", "see-also"];
+            const ids = ["overview", "task-coverage", "scene-coverage", "dataset-format", "applications", "factory-examples", "robots", "citation", "see-also"];
             const sections = ids.map(id => document.getElementById(id)).filter(Boolean);
             const tocLinks = [...document.querySelectorAll(".toc-link")];
             const sidebarItems = [...document.querySelectorAll(".sidebar-item[href^='#']")];
