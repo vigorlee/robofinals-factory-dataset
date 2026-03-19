@@ -1,0 +1,124 @@
+{
+  "scenes": [
+    {
+      "id": "factory_assembly_001",
+      "name": "Assembly Line V1",
+      "category": "factory",
+      "subcategory": "assembly",
+      "tags": ["factory", "assembly", "conveyor", "tabletop"],
+      "description": "典型的工厂装配线场景，包含传送带、工作台、零件盒等元素。适用于抓取、装配、搬运等任务评测。",
+      "thumbnail": "/images/scenes/assembly_line_001.jpg",
+      "usdUrl": "/models/scenes/factory_assembly_001.usd",
+      "graphJson": {
+        "scene_id": "factory_assembly_001",
+        "tags": ["factory", "assembly", "conveyor"],
+        "objects": [
+          {
+            "id": "conveyor_belt_01",
+            "category": "equipment",
+            "affordances": ["movable_surface", "transport"],
+            "sites": ["part_spawn_site", "part_pick_site"]
+          },
+          {
+            "id": "workbench_01",
+            "category": "furniture",
+            "affordances": ["supportable", "assembly_surface"],
+            "sites": ["tool_place_site", "part_assembly_site"]
+          },
+          {
+            "id": "parts_bin_01",
+            "category": "container",
+            "affordances": ["containable", "graspable"],
+            "sites": ["bin_interior_site"]
+          }
+        ]
+      },
+      "assets": [
+        {"id": "conveyor_belt_01", "name": "Conveyor Belt", "category": "equipment"},
+        {"id": "workbench_01", "name": "Workbench", "category": "furniture"},
+        {"id": "parts_bin_01", "name": "Parts Bin", "category": "container"},
+        {"id": "metal_bearing_01", "name": "Metal Bearing", "category": "mechanical_part"}
+      ],
+      "compatibleTasks": ["pick_part_from_bin", "assemble_shaft_into_hole", "transfer_between_stations"],
+      "assetCount": 25,
+      "taskCount": 15
+    },
+    {
+      "id": "factory_warehouse_001",
+      "name": "Warehouse Storage Area",
+      "category": "factory",
+      "subcategory": "warehouse",
+      "tags": ["factory", "warehouse", "storage", "shelf"],
+      "description": "工厂仓储区场景，包含货架、托盘、AGV 路径等元素。",
+      "thumbnail": "/images/scenes/warehouse_001.jpg",
+      "usdUrl": "/models/scenes/factory_warehouse_001.usd",
+      "graphJson": {
+        "scene_id": "factory_warehouse_001",
+        "tags": ["factory", "warehouse", "storage"],
+        "objects": [
+          {
+            "id": "shelf_01",
+            "category": "storage",
+            "affordances": ["supportable", "containable"],
+            "sites": ["shelf_slot_01", "shelf_slot_02"]
+          },
+          {
+            "id": "pallet_01",
+            "category": "transport",
+            "affordances": ["supportable", "stackable"],
+            "sites": ["pallet_top_site"]
+          }
+        ]
+      },
+      "assets": [
+        {"id": "shelf_01", "name": "Storage Shelf", "category": "storage"},
+        {"id": "pallet_01", "name": "Pallet", "category": "transport"}
+      ],
+      "compatibleTasks": ["shelf_to_kitting_tray", "palletizing"],
+      "assetCount": 40,
+      "taskCount": 20
+    },
+    {
+      "id": "factory_inspection_001",
+      "name": "Quality Inspection Station",
+      "category": "factory",
+      "subcategory": "inspection",
+      "tags": ["factory", "inspection", "quality_control", "camera"],
+      "description": "工厂质检站场景，包含检测工位、相机、不良品区等元素。",
+      "thumbnail": "/images/scenes/inspection_001.jpg",
+      "usdUrl": "/models/scenes/factory_inspection_001.usd",
+      "graphJson": {
+        "scene_id": "factory_inspection_001",
+        "tags": ["factory", "inspection", "quality_control"],
+        "objects": [
+          {
+            "id": "inspection_table_01",
+            "category": "furniture",
+            "affordances": ["supportable"],
+            "sites": ["part_inspection_site"]
+          },
+          {
+            "id": "camera_rig_01",
+            "category": "equipment",
+            "affordances": ["viewable"],
+            "sites": ["camera_view_site"]
+          },
+          {
+            "id": "reject_bin_01",
+            "category": "container",
+            "affordances": ["containable"],
+            "sites": ["reject_bin_site"]
+          }
+        ]
+      },
+      "assets": [
+        {"id": "inspection_table_01", "name": "Inspection Table", "category": "furniture"},
+        {"id": "camera_rig_01", "name": "Camera Rig", "category": "equipment"},
+        {"id": "reject_bin_01", "name": "Reject Bin", "category": "container"}
+      ],
+      "compatibleTasks": ["inspect_part_quality", "visual_classification"],
+      "assetCount": 18,
+      "taskCount": 10
+    }
+  ]
+}

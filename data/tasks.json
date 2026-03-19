@@ -1,0 +1,198 @@
+{
+  "tasks": [
+    {
+      "id": "pick_part_from_bin",
+      "name": "Pick Part from Bin",
+      "nameZh": "从料箱抓取零件",
+      "type": "manipulation",
+      "category": "pick",
+      "difficulty": 2,
+      "difficultyStars": "★★☆",
+      "description": "从料箱中抓取金属零件并放置到工作台",
+      "descriptionZh": "从料箱中抓取金属零件并放置到工作台",
+      "successRate": 92,
+      "avgCompletionTime": "4.2s",
+      "episodeCount": 1000,
+      "requirements": {
+        "sceneTags": ["factory", "assembly", "tabletop"],
+        "requiredAffordances": ["containable", "supportable"],
+        "assetCategories": ["mechanical_part"],
+        "assetTags": ["graspable", "metal"],
+        "robotTypes": ["UR5", "UR10", "Franka"]
+      },
+      "template": {
+        "task_id": "pick_part_from_bin",
+        "version": "1.0",
+        "type": "manipulation",
+        "steps": [
+          {"step_id": 1, "action": "approach", "target_affordance": "containable"},
+          {"step_id": 2, "action": "grasp", "grasp_type": "top_grasp"},
+          {"step_id": 3, "action": "lift", "min_height": 0.1},
+          {"step_id": 4, "action": "transfer", "target_affordance": "supportable"},
+          {"step_id": 5, "action": "place", "placement_type": "stable"}
+        ],
+        "success_predicate": [
+          "holding(robot, part)",
+          "distance(part, bin) > 0.2",
+          "part_on_surface(part, workbench)"
+        ],
+        "constraints": {
+          "cycle_time": 5.0,
+          "max_force": 30.0,
+          "position_error": 0.005
+        }
+      },
+      "demoVideos": [
+        {"type": "success", "url": "/videos/pick_part_success.mp4", "title": "Success Demo"},
+        {"type": "failure", "url": "/videos/pick_part_failure.mp4", "title": "Failure Cases"}
+      ],
+      "relatedTasks": ["place_part_in_tray", "transfer_between_stations"]
+    },
+    {
+      "id": "assemble_shaft_into_hole",
+      "name": "Assemble Shaft into Hole",
+      "nameZh": "轴孔装配",
+      "type": "manipulation",
+      "category": "assembly",
+      "difficulty": 3,
+      "difficultyStars": "★★★",
+      "description": "将轴精确插入孔中，需要高精度力控",
+      "descriptionZh": "将轴精确插入孔中，需要高精度力控",
+      "successRate": 85,
+      "avgCompletionTime": "6.5s",
+      "episodeCount": 500,
+      "requirements": {
+        "sceneTags": ["factory", "assembly"],
+        "requiredAffordances": ["supportable", "alignable"],
+        "assetCategories": ["shaft", "hole_plate"],
+        "robotTypes": ["UR5", "Franka"]
+      },
+      "template": {
+        "task_id": "assemble_shaft_into_hole",
+        "version": "1.0",
+        "type": "assembly",
+        "steps": [
+          {"step_id": 1, "action": "pick", "target": "shaft"},
+          {"step_id": 2, "action": "align", "target": "hole"},
+          {"step_id": 3, "action": "insert", "force_limit": 10.0},
+          {"step_id": 4, "action": "release"}
+        ],
+        "success_predicate": [
+          "shaft_inserted(hole)",
+          "insertion_depth > 0.9 * shaft_length"
+        ],
+        "constraints": {
+          "cycle_time": 8.0,
+          "max_force": 10.0,
+          "position_error": 0.002
+        }
+      },
+      "demoVideos": [],
+      "relatedTasks": ["pick_part_from_bin", "precision_insertion"]
+    },
+    {
+      "id": "transfer_between_stations",
+      "name": "Transfer Between Stations",
+      "nameZh": "工位间搬运",
+      "type": "manipulation",
+      "category": "transport",
+      "difficulty": 2,
+      "difficultyStars": "★★☆",
+      "description": "将零件从一个工位搬运到另一个工位",
+      "descriptionZh": "将零件从一个工位搬运到另一个工位",
+      "successRate": 90,
+      "avgCompletionTime": "5.8s",
+      "episodeCount": 800,
+      "requirements": {
+        "sceneTags": ["factory", "assembly"],
+        "requiredAffordances": ["supportable"],
+        "assetCategories": ["mechanical_part"],
+        "robotTypes": ["UR5", "UR10", "AGV"]
+      },
+      "template": {
+        "task_id": "transfer_between_stations",
+        "version": "1.0",
+        "type": "transport",
+        "steps": [
+          {"step_id": 1, "action": "navigate", "target": "source_station"},
+          {"step_id": 2, "action": "grasp", "target": "part"},
+          {"step_id": 3, "action": "navigate", "target": "dest_station"},
+          {"step_id": 4, "action": "place"}
+        ],
+        "success_predicate": [
+          "part_at_destination(part, dest_station)",
+          "no_collision"
+        ],
+        "constraints": {
+          "cycle_time": 10.0,
+          "max_velocity": 0.5
+        }
+      },
+      "demoVideos": [],
+      "relatedTasks": ["pick_part_from_bin", "place_part_in_tray"]
+    },
+    {
+      "id": "FACTORY-001",
+      "name": "Conveyor To Bin Sorting",
+      "nameZh": "传送带分拣入料箱",
+      "type": "manipulation",
+      "category": "pick",
+      "difficulty": 2,
+      "difficultyStars": "★★☆",
+      "description": "从传送带上抓取指定类别的零件，并放入对应料箱或周转箱中",
+      "descriptionZh": "从传送带上抓取指定类别的零件，并放入对应料箱或周转箱中",
+      "successRate": 88,
+      "avgCompletionTime": "4.5s",
+      "episodeCount": 200,
+      "requirements": {
+        "sceneTags": ["factory", "assembly", "conveyor"],
+        "requiredAffordances": ["movable_surface", "containable"],
+        "assetCategories": ["mechanical_part"],
+        "robotTypes": ["UR5", "UR10"]
+      },
+      "template": {
+        "task_id": "FACTORY-001",
+        "version": "1.0",
+        "type": "manipulation",
+        "scene_requirements": {
+          "scene_tags": ["factory", "assembly", "conveyor"],
+          "required_affordances": ["movable_surface", "containable", "supportable"]
+        },
+        "asset_requirements": {
+          "target_parts": {
+            "categories": ["nut", "gear", "bracket", "boxed_part"],
+            "count": [3, 10]
+          },
+          "distractors": {
+            "categories": ["washer", "bolt", "metal_block"],
+            "count": [1, 5]
+          },
+          "bins": {
+            "colors": ["red", "green", "blue", "yellow"],
+            "count": [2, 4]
+          }
+        },
+        "atomic_actions": [
+          {"action": "navigate", "target": "conveyor_side"},
+          {"action": "visual_recognition", "target": "parts_on_conveyor"},
+          {"action": "grasp", "target": "target_part", "grasp_type": "top_grasp"},
+          {"action": "transport", "target": "target_bin"},
+          {"action": "place", "target": "inside_bin"}
+        ],
+        "success_criteria": [
+          "part_in_correct_bin",
+          "part_stable",
+          "no_fall_to_ground",
+          "no_wrong_bin"
+        ],
+        "factory_constraints": {
+          "cycle_time": 30.0,
+          "safety": {"max_force": 30.0, "speed_limit": 0.5},
+          "quality": {"position_error": 0.01, "classification_accuracy": 0.95}
+        }
+      },
+      "demoVideos": [],
+      "relatedTasks": ["pick_part_from_bin", "visual_sorting"]
+    }
+  ]
+}

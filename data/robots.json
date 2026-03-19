@@ -1,0 +1,56 @@
+{
+  "robots": [
+    {
+      "id": "ur5",
+      "name": "UR5",
+      "manufacturer": "Universal Robots",
+      "type": "industrial",
+      "dof": 6,
+      "payload": "5kg",
+      "reach": "850mm",
+      "repeatability": "±0.03mm",
+      "weight": "18.4kg",
+      "description": "UR5 是 Universal Robots 推出的协作机器人，广泛应用于工厂自动化场景。",
+      "image": "/images/robots/ur5.png",
+      "usdFiles": [
+        {"name": "ur5.usd", "url": "/models/ur5.usd", "description": "Base model"},
+        {"name": "ur5_gripper.usd", "url": "/models/ur5_gripper.usd", "description": "With Robotiq 2F-85"}
+      ],
+      "compatibleTasks": ["pick_part_from_bin", "assemble_shaft_into_hole", "transfer_between_stations"]
+    },
+    {
+      "id": "ur10",
+      "name": "UR10",
+      "manufacturer": "Universal Robots",
+      "type": "industrial",
+      "dof": 6,
+      "payload": "10kg",
+      "reach": "1300mm",
+      "repeatability": "±0.03mm",
+      "weight": "33.2kg",
+      "description": "UR10 是 UR 系列中负载更大的型号，适用于重型工件搬运。",
+      "image": "/images/robots/ur10.png",
+      "usdFiles": [
+        {"name": "ur10.usd", "url": "/models/ur10.usd", "description": "Base model"}
+      ],
+      "compatibleTasks": ["pick_part_from_bin", "palletizing", "machine_tending"]
+    },
+    {
+      "id": "franka-emika",
+      "name": "Franka Emika Panda",
+      "manufacturer": "Franka Robotics",
+      "type": "collaborative",
+      "dof": 7,
+      "payload": "3kg",
+      "reach": "855mm",
+      "repeatability": "±0.1mm",
+      "weight": "16kg",
+      "description": "Franka Panda 是一款高灵活性的协作机器人，适用于精密装配任务。",
+      "image": "/images/robots/franka.png",
+      "usdFiles": [
+        {"name": "franka.usd", "url": "/models/franka.usd", "description": "Base model"}
+      ],
+      "compatibleTasks": ["assemble_shaft_into_hole", "precision_insertion"]
+    }
+  ]
+}

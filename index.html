@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboFinals Factory Dataset | Lightwheel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f5f5;
+            --surface: rgba(255, 255, 255, 0.94);
+            --surface-strong: #ffffff;
+            --line: #e6e6e6;
+            --line-strong: #d2d2d2;
+            --text: #111111;
+            --muted: #5c5c5c;
+            --accent: #111111;
+            --shadow: 0 12px 36px rgba(0, 0, 0, 0.05);
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: "Instrument Sans", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(0, 0, 0, 0.03), transparent 24%),
+                linear-gradient(180deg, #fafafa 0%, #f3f3f3 100%);
+        }
+
+        code, pre { font-family: "JetBrains Mono", monospace; }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(14px);
+            background: rgba(250, 250, 250, 0.88);
+            border-bottom: 1px solid rgba(210, 210, 210, 0.75);
+        }
+
+        .shell {
+            max-width: 1480px;
+            margin: 0 auto;
+            padding: 0 24px 48px;
+        }
+
+        .page-grid {
+            display: grid;
+            grid-template-columns: 260px minmax(0, 1fr) 220px;
+            gap: 28px;
+            align-items: start;
+            padding-top: 28px;
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid rgba(198, 211, 228, 0.75);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar-card {
+            position: sticky;
+            top: 92px;
+            border-radius: 22px;
+            padding: 20px;
+        }
+
+        .content-card {
+            border-radius: 28px;
+            padding: 32px;
+        }
+
+        .sidebar-link,
+        .toc-link {
+            display: block;
+            color: var(--muted);
+            text-decoration: none;
+            border-radius: 12px;
+            padding: 8px 10px;
+            transition: 0.2s ease;
+        }
+
+        .sidebar-link:hover,
+        .toc-link:hover,
+        .sidebar-link.active,
+        .toc-link.active {
+            background: rgba(17, 17, 17, 0.06);
+            color: #000000;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.04);
+            color: #111111;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .hero {
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 246, 246, 0.98));
+            color: #111111;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: auto -80px -80px auto;
+            width: 240px;
+            height: 240px;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.05), transparent 65%);
+        }
+
+        .section {
+            padding-top: 28px;
+            margin-top: 28px;
+            border-top: 1px solid var(--line);
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 22px;
+        }
+
+        .metric {
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 16px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .info-card {
+            background: var(--surface-strong);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 20px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 720px;
+        }
+
+        thead {
+            background: #f3f3f3;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px 16px;
+            border-bottom: 1px solid #e7eef7;
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        .mono-block {
+            background: #111111;
+            color: #f1f1f1;
+            border-radius: 18px;
+            padding: 18px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(17, 17, 17, 0.08);
+            color: #111111;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .mini-nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .mini-nav a:hover {
+            color: #000000;
+        }
+
+        @media (max-width: 1200px) {
+            .page-grid {
+                grid-template-columns: 240px minmax(0, 1fr);
+            }
+
+            .toc-col {
+                display: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .page-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-col {
+                display: none;
+            }
+
+            .content-card {
+                padding: 22px;
+                border-radius: 22px;
+            }
+
+            .metric-grid,
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="shell py-4">
+            <div class="flex items-center justify-between gap-6">
+                <div class="flex items-center gap-4 min-w-0">
+                    <div class="h-10 w-10 rounded-2xl bg-black text-white flex items-center justify-center font-bold">L</div>
+                    <div class="min-w-0">
+                        <div class="font-semibold text-lg leading-none">Lightwheel</div>
+                        <div class="text-sm text-neutral-500 mt-1">LW-BenchHub / Dataset Docs</div>
+                    </div>
+                </div>
+                <nav class="mini-nav hidden md:flex items-center gap-5">
+                    <a href="#overview">Overview</a>
+                    <a href="#task-coverage">Tasks</a>
+                    <a href="#robots">Robots</a>
+                    <a href="#dataset-format">Format</a>
+                    <a href="#download">Download</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="shell">
+        <div class="page-grid">
+            <aside class="sidebar-col">
+                <div class="panel sidebar-card">
+                    <div class="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400 mb-4">LW-BenchHub</div>
+                    <nav class="space-y-1">
+                        <a class="sidebar-link active" href="#overview">Dataset</a>
+                        <a class="sidebar-link" href="#overview">Overview</a>
+                        <a class="sidebar-link" href="#task-coverage">Task Coverage</a>
+                        <a class="sidebar-link" href="#scene-coverage">Scene Coverage</a>
+                        <a class="sidebar-link" href="#robots">Robots</a>
+                        <a class="sidebar-link" href="#dataset-format">Dataset Format</a>
+                        <a class="sidebar-link" href="#composition">Composition</a>
+                        <a class="sidebar-link" href="#benchmark">Benchmark</a>
+                        <a class="sidebar-link" href="#download">Download</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <main>
+                <div class="panel content-card">
+                    <div class="eyebrow">RoboFinals Factory Extension</div>
+
+                    <section class="hero mt-5">
+                        <div class="max-w-4xl relative z-10">
+                            <p class="text-sm uppercase tracking-[0.24em] text-neutral-500 mb-3">Dataset</p>
+                            <h1 class="text-4xl md:text-5xl font-bold leading-tight">Lightwheel Factory Manipulation Task Dataset</h1>
+                            <p class="mt-5 text-lg text-neutral-700 max-w-3xl">
+                                A docs-style benchmark page aligned with the Lightwheel dataset site, adapted for RoboFinals factory manipulation tasks, scene assets, robot coverage, and evaluation materials.
+                            </p>
+                            <div class="metric-grid">
+                                <div class="metric">
+                                    <div class="text-neutral-500 text-sm">Episodes</div>
+                                    <div class="text-3xl font-bold mt-2" id="metric-episodes">2,500+</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="text-neutral-500 text-sm">Tasks</div>
+                                    <div class="text-3xl font-bold mt-2" id="metric-tasks">4</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="text-neutral-500 text-sm">Scenes</div>
+                                    <div class="text-3xl font-bold mt-2" id="metric-scenes">3</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="text-neutral-500 text-sm">Robots</div>
+                                    <div class="text-3xl font-bold mt-2" id="metric-robots">3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="overview" class="section">
+                        <h2 class="text-3xl font-bold">Overview</h2>
+                        <p class="mt-4 muted leading-7">
+                            The Lightwheel Factory Manipulation Task Dataset is a structured benchmark for industrial manipulation and robot evaluation. It follows a documentation-centered presentation similar to the public Lightwheel dataset page, while shifting the content toward factory assembly, transport, inspection, and sorting workflows.
+                        </p>
+                        <div class="info-grid mt-7">
+                            <div class="info-card">
+                                <h3 class="font-semibold text-lg">What it covers</h3>
+                                <ul class="mt-4 space-y-3 text-sm leading-6 text-neutral-600">
+                                    <li><span class="font-semibold text-neutral-900">Task coverage:</span> pick, assembly, transfer, and conveyor sorting templates.</li>
+                                    <li><span class="font-semibold text-neutral-900">Multi-robot:</span> UR5, UR10, and Franka Panda with task-specific compatibility.</li>
+                                    <li><span class="font-semibold text-neutral-900">Scene diversity:</span> assembly line, warehouse storage, and quality inspection stations.</li>
+                                </ul>
+                            </div>
+                            <div class="info-card">
+                                <h3 class="font-semibold text-lg">Why this format</h3>
+                                <ul class="mt-4 space-y-3 text-sm leading-6 text-neutral-600">
+                                    <li><span class="font-semibold text-neutral-900">Docs-first layout:</span> easier to scan than a marketing landing page.</li>
+                                    <li><span class="font-semibold text-neutral-900">Consistent metadata:</span> unified task templates and structured success predicates.</li>
+                                    <li><span class="font-semibold text-neutral-900">Deployment-friendly:</span> static HTML and JSON, ready for GitHub Pages or other free hosting.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="task-coverage" class="section">
+                        <div class="flex items-center justify-between gap-4 flex-wrap">
+                            <div>
+                                <h2 class="text-3xl font-bold">Factory Task Coverage</h2>
+                                <p class="mt-2 muted">Task mapping modeled after the Lightwheel docs tables, but using your factory dataset entries.</p>
+                            </div>
+                            <span class="pill">Dynamic JSON-backed table</span>
+                        </div>
+                        <div class="table-wrap mt-6">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Task Name</th>
+                                        <th>Category</th>
+                                        <th>Difficulty</th>
+                                        <th>Episode Count</th>
+                                        <th>Success Rate</th>
+                                        <th>Robots</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="task-table-body"></tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section id="scene-coverage" class="section">
+                        <h2 class="text-3xl font-bold">Scene Coverage</h2>
+                        <p class="mt-2 muted">Factory environments included in the benchmark, with asset complexity and task support shown in a compact documentation style.</p>
+                        <div class="table-wrap mt-6">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Scene ID</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Assets</th>
+                                        <th>Task Slots</th>
+                                        <th>Compatible Tasks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="scene-table-body"></tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section id="robots" class="section">
+                        <h2 class="text-3xl font-bold">Robot Coverage</h2>
+                        <p class="mt-2 muted">Robot support cards replace the bulky homepage blocks and fit the docs page structure more naturally.</p>
+                        <div id="robot-grid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-5 mt-6"></div>
+                    </section>
+
+                    <section id="dataset-format" class="section">
+                        <h2 class="text-3xl font-bold">Dataset Format</h2>
+                        <p class="mt-2 muted">The dataset follows a structured episode schema with scene metadata, constraints, and trajectory fields for training and evaluation pipelines.</p>
+                        <div class="mono-block mt-6"><pre>{
+  "episode_id": "factory_pick_001",
+  "task_id": "pick_part_from_bin",
+  "scene": {
+    "scene_id": "factory_assembly_001",
+    "scene_type": "assembly_line",
+    "layout_seed": 42
+  },
+  "factory_metadata": {
+    "cycle_time_requirement": 5.0,
+    "safety_constraints": ["no_collision", "force_limit_30N"],
+    "quality_thresholds": { "position_error": 0.005 }
+  },
+  "trajectory": {
+    "observations": { "images": {}, "state": [] },
+    "actions": [],
+    "success": true
+  }
+}</pre></div>
+
+                        <div class="mt-6">
+                            <h3 class="text-xl font-semibold">Directory Structure</h3>
+                            <div class="mono-block mt-4"><pre>factory-web-portal/
+|-- index.html
+|-- data/
+|   |-- robots.json
+|   |-- scenes.json
+|   |-- tasks.json
+|   `-- DATASET.md
+|-- public/
+|   |-- images/
+|   `-- models/
+`-- DEPLOY.md</pre></div>
+                        </div>
+                    </section>
+
+                    <section id="composition" class="section">
+                        <h2 class="text-3xl font-bold">Dataset Composition</h2>
+                        <div class="info-grid mt-6">
+                            <div class="info-card">
+                                <h3 class="font-semibold text-lg">Composition Summary</h3>
+                                <ul class="mt-4 space-y-3 text-sm leading-6 text-neutral-600">
+                                    <li><span class="font-semibold text-neutral-900">Templates:</span> logic-based task definitions with success predicates and factory constraints.</li>
+                                    <li><span class="font-semibold text-neutral-900">Assets:</span> workbenches, bins, conveyors, storage shelves, and inspection stations.</li>
+                                    <li><span class="font-semibold text-neutral-900">Procedural variation:</span> scene tags, randomization fields, and layout seeds for diversity.</li>
+                                </ul>
+                            </div>
+                            <div class="info-card">
+                                <h3 class="font-semibold text-lg">Recommended Uses</h3>
+                                <ul class="mt-4 space-y-3 text-sm leading-6 text-neutral-600">
+                                    <li>Imitation learning and policy finetuning for industrial tasks.</li>
+                                    <li>Cross-robot transfer evaluation across collaborative and industrial arms.</li>
+                                    <li>Benchmarking perception, scene grounding, and constrained manipulation planning.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="benchmark" class="section">
+                        <h2 class="text-3xl font-bold">Benchmark Notes</h2>
+                        <p class="mt-2 muted">This section mirrors the role of the benchmark content on the reference site, while staying aligned with your local factory materials.</p>
+                        <div class="table-wrap mt-6">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Metric</th>
+                                        <th>Value</th>
+                                        <th>Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Total Episodes</td>
+                                        <td>2,500+</td>
+                                        <td>Current dataset snapshot from local materials.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Baseline Success</td>
+                                        <td>85-92%</td>
+                                        <td>Varies by task complexity and robot platform.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sim2Real Gap</td>
+                                        <td>8.5%</td>
+                                        <td>Reference benchmark figure from the bundled dataset notes.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Primary Modes</td>
+                                        <td>Pick, assembly, transfer, sorting</td>
+                                        <td>Selected to reflect RoboFinals factory workflows.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section id="download" class="section">
+                        <h2 class="text-3xl font-bold">Download & Materials</h2>
+                        <p class="mt-2 muted">The page is prepared as a static documentation page, so it can be hosted free on GitHub Pages, Cloudflare Pages, or other static platforms.</p>
+                        <div class="grid md:grid-cols-2 gap-5 mt-6">
+                            <div class="info-card">
+                                <h3 class="font-semibold text-lg">Local Materials</h3>
+                                <p class="text-sm text-neutral-600 mt-3">Use the extracted bundle as the base project and continue replacing placeholder assets in <code>public/images</code> and <code>public/models</code>.</p>
+                                <a class="inline-block mt-5 text-black font-semibold no-underline" href="./data/DATASET.md">Open dataset notes</a>
+                            </div>
+                            <div class="info-card">
+                                <h3 class="font-semibold text-lg">Free Hosting</h3>
+                                <p class="text-sm text-neutral-600 mt-3">Push this folder to GitHub and enable GitHub Pages, or upload directly to Cloudflare Pages for a free public URL.</p>
+                                <a class="inline-block mt-5 text-black font-semibold no-underline" href="./DEPLOY.md">Open deploy guide</a>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+
+            <aside class="toc-col">
+                <div class="panel sidebar-card">
+                    <div class="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400 mb-4">On this page</div>
+                    <nav class="space-y-1">
+                        <a class="toc-link active" href="#overview">Overview</a>
+                        <a class="toc-link" href="#task-coverage">Task Coverage</a>
+                        <a class="toc-link" href="#scene-coverage">Scene Coverage</a>
+                        <a class="toc-link" href="#robots">Robots</a>
+                        <a class="toc-link" href="#dataset-format">Dataset Format</a>
+                        <a class="toc-link" href="#composition">Composition</a>
+                        <a class="toc-link" href="#benchmark">Benchmark</a>
+                        <a class="toc-link" href="#download">Download</a>
+                    </nav>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        async function loadJson(path) {
+            const response = await fetch(path);
+            if (!response.ok) throw new Error(`Failed to load ${path}`);
+            return response.json();
+        }
+
+        function createTaskRow(task, index) {
+            const robots = (task.requirements && task.requirements.robotTypes ? task.requirements.robotTypes : []).join(", ");
+            return `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>
+                        <div class="font-semibold">${task.name}</div>
+                        <div class="text-neutral-500 text-xs mt-1">${task.id}</div>
+                    </td>
+                    <td class="capitalize">${task.category || "-"}</td>
+                    <td>${task.difficulty || "-"}</td>
+                    <td>${task.episodeCount || "-"}</td>
+                    <td>${task.successRate ? `${task.successRate}%` : "-"}</td>
+                    <td>${robots || "-"}</td>
+                </tr>
+            `;
+        }
+
+        function createSceneRow(scene) {
+            return `
+                <tr>
+                    <td><code>${scene.id}</code></td>
+                    <td>${scene.name}</td>
+                    <td>${scene.subcategory || scene.category || "-"}</td>
+                    <td>${scene.assetCount || scene.assets?.length || "-"}</td>
+                    <td>${scene.taskCount || scene.compatibleTasks?.length || "-"}</td>
+                    <td>${(scene.compatibleTasks || []).join(", ") || "-"}</td>
+                </tr>
+            `;
+        }
+
+        function createRobotCard(robot) {
+            const files = (robot.usdFiles || []).map(file => `<li>${file.name}</li>`).join("");
+            const compatibleTasks = (robot.compatibleTasks || []).join(", ");
+
+            return `
+                <article class="info-card">
+                    <div class="flex items-center justify-between gap-3">
+                        <div>
+                            <h3 class="text-xl font-semibold">${robot.name}</h3>
+                            <p class="text-sm text-neutral-500 mt-1">${robot.manufacturer}</p>
+                        </div>
+                        <span class="pill">${robot.type}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mt-5 text-sm">
+                        <div><span class="text-neutral-500">DoF</span><div class="font-semibold mt-1">${robot.dof}</div></div>
+                        <div><span class="text-neutral-500">Payload</span><div class="font-semibold mt-1">${robot.payload}</div></div>
+                        <div><span class="text-neutral-500">Reach</span><div class="font-semibold mt-1">${robot.reach}</div></div>
+                        <div><span class="text-neutral-500">Repeatability</span><div class="font-semibold mt-1">${robot.repeatability}</div></div>
+                    </div>
+                    <div class="mt-5 text-sm text-neutral-600">
+                        <div class="font-semibold text-neutral-900 mb-2">Compatible tasks</div>
+                        <div>${compatibleTasks || "-"}</div>
+                    </div>
+                    <div class="mt-5 text-sm text-neutral-600">
+                        <div class="font-semibold text-neutral-900 mb-2">Model files</div>
+                        <ul class="space-y-1">${files || "<li>-</li>"}</ul>
+                    </div>
+                </article>
+            `;
+        }
+
+        function activateToc() {
+            const ids = ["overview", "task-coverage", "scene-coverage", "robots", "dataset-format", "composition", "benchmark", "download"];
+            const links = [...document.querySelectorAll(".toc-link, .sidebar-link")];
+            const sections = ids.map(id => document.getElementById(id)).filter(Boolean);
+
+            const observer = new IntersectionObserver((entries) => {
+                const visible = entries
+                    .filter(entry => entry.isIntersecting)
+                    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+                if (!visible.length) return;
+                const currentId = visible[0].target.id;
+
+                links.forEach(link => {
+                    link.classList.toggle("active", link.getAttribute("href") === `#${currentId}`);
+                });
+            }, { rootMargin: "-20% 0px -65% 0px", threshold: 0.01 });
+
+            sections.forEach(section => observer.observe(section));
+        }
+
+        async function init() {
+            try {
+                const [taskData, sceneData, robotData] = await Promise.all([
+                    loadJson("./data/tasks.json"),
+                    loadJson("./data/scenes.json"),
+                    loadJson("./data/robots.json")
+                ]);
+
+                const tasks = taskData.tasks || [];
+                const scenes = sceneData.scenes || [];
+                const robots = robotData.robots || [];
+
+                document.getElementById("metric-tasks").textContent = tasks.length;
+                document.getElementById("metric-scenes").textContent = scenes.length;
+                document.getElementById("metric-robots").textContent = robots.length;
+                document.getElementById("metric-episodes").textContent = `${tasks.reduce((sum, task) => sum + (task.episodeCount || 0), 0).toLocaleString()}+`;
+
+                document.getElementById("task-table-body").innerHTML = tasks.map(createTaskRow).join("");
+                document.getElementById("scene-table-body").innerHTML = scenes.map(createSceneRow).join("");
+                document.getElementById("robot-grid").innerHTML = robots.map(createRobotCard).join("");
+            } catch (error) {
+                console.error(error);
+            }
+
+            activateToc();
+        }
+
+        init();
+    </script>
+</body>
+</html>
